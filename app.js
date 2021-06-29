@@ -69,4 +69,37 @@ app.get('/newpost', (req, res) => {
   });
 });
 
+// get all posts
+
+app.get('/allposts', (req, res) => {
+  const sql = 'SELECT * FROM posts';
+  db.query(sql, (err, result) => {
+    if (err) throw err.stack;
+    res.json(result);
+  });
+});
+
+// get single post dynamically
+app.get('/post/:id', (req, res) => {
+  const sql = `SELECT * FROM posts WHERE id = ${db.escape(req.params.id)}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err.stack;
+    res.json(result);
+  });
+});
+
+// update post
+
+app.get('/post/:id/update', (req, res) => {
+  // from form returns udated title
+  const newTitle = 'Updated Title';
+  const sql = `UPDATE posts SET title = ${db.escape(
+    newTitle
+  )} WHERE id = ${db.escape(req.params.id)}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err.stack;
+    res.redirect('/allposts');
+  });
+});
+
 app.listen('3200', console.log('Server running, port 3200'));

@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/lukas-anci/node_sql/issues"
   },
-  "homepage": "https://github.com/lukas-anci/node_sql#readme"
+  "homepage": "https://github.com/lukas-anci/node_sql#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1"
+  }
 }

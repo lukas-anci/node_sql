@@ -177,4 +177,19 @@ app.get('/author/:id', (req, res) => {
   });
 });
 
+// get author ant posts
+app.get('/authors-and-posts', (req, res) => {
+  const sql = `
+    SELECT posts.title, authors.name, authors.age
+    FROM posts
+    INNER JOIN authors
+    ON posts.id = authors.post_id
+    `;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.json({ result, msg: 'author and post merge created' });
+  });
+});
+
 app.listen('3200', console.log('Server running, port 3200'));

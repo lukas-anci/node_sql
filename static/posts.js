@@ -2,6 +2,7 @@ console.log('hello from posts');
 
 const ulEl = document.getElementById('ul');
 const idSelectEl = document.getElementById('ids');
+const authEl = document.getElementById('auth');
 
 async function getData(url) {
   try {
@@ -31,7 +32,7 @@ function generateIdSelect(data) {
 }
 
 // parissiusti visus postus su fetch ar axios
-getData('/post').then((data) => generateLi(data));
+getData('/allposts').then((data) => generateLi(data));
 // atvaizduoti juos saraso pavidalu su nuorodom
 
 // kiekviena nuoroda veda i individualu posta
@@ -56,3 +57,19 @@ getData('/post').then((data) => generateLi(data));
 
 // padaryti kad postId pasirinkimas formoj butu selectas tu postu kurie yra siuo metu sukurti
 getData('/post-ids').then((data) => generateIdSelect(data));
+
+// atvaizduot i autorius ir posts titles
+
+function generateAuthPosts(data) {
+  data.forEach(({ title, name, age }) => {
+    const li = document.createElement('li');
+    li.innerHTML = ` ${name} ${age} ${title} `;
+    authEl.append(li);
+  });
+}
+
+getData('/authors-and-posts').then((data) => {
+  if (data.success) {
+    generateAuthPosts(data.result);
+  }
+});

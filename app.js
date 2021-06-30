@@ -119,4 +119,62 @@ app.get('/post/:id/delete', (req, res) => {
   });
 });
 
+// get ids and titles
+app.get('/post-ids', (req, res) => {
+  const sql = 'SELECT id, title FROM posts';
+  db.query(sql, (err, result) => {
+    if (err) throw err.stack;
+    res.json(result);
+  });
+});
+
+// AUTHORS
+//create authors table
+app.get('/authors/table/create', (req, res) => {
+  const sql = `
+    CREATE TABLE authors(
+      au_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        name VARCHAR(25) NOT NULL,
+        age INT(2) NOT NULL,
+        sex VARCHAR(10) NOT NULL,
+        post_id INT  NOT NULL,
+        PRIMARY KEY (au_id)
+    )`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.json({ result, msg: 'table author success' });
+  });
+});
+
+//get all authors
+
+app.get('/authors', (req, res) => {
+  const sql = 'SELECT * FROM authors';
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
+//add new author
+app.post('/authors/new', (req, res) => {
+  const sql = 'INSERT INTO authors SET ?';
+  db.query(sql, req.body, (err, result) => {
+    if (err) throw err.stack;
+    console.log(result);
+    res.redirect('/');
+  });
+});
+
+app.get('/author/:id', (req, res) => {
+  const sql = `SELECT * FROM authors WHERE au_id = ${db.escape(req.params.id)}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
 app.listen('3200', console.log('Server running, port 3200'));

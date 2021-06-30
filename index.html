@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script src="./posts.js" defer></script>
+    <script src="./authors.js" defer></script>
   </head>
   <body>
     <h1>Npde sql</h1>
@@ -18,9 +19,26 @@
     </form>
 
     <h2>Current posts</h2>
-    <ul>
-      <li><a href="/post/1">Post1</a></li>
-      <li><a href="#">Post2</a></li>
-    </ul>
+    <ul id="ul"></ul>
+
+    <select name="" id="ids">
+      <option value="nieko">Pasirinkite posta</option>
+    </select>
+
+    <form action="/authors/new" method="POST" autocomplete="off">
+      <input type="text" placeholder="name" name="name" /> <br />
+      <input type="number" placeholder="age" name="age" /> <br />
+      <select name="sex" id="sex">
+        <option value="male">male</option>
+        <option value="female">female</option>
+        <option value="other">other</option>
+      </select>
+
+      <button type="submit">Create author</button>
+    </form>
+
+    <h2>Authors</h2>
+
+    <ul id="authors-ul"></ul>
   </body>
 </html>

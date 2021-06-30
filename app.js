@@ -27,9 +27,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'static')));
 
+// app.get('/', (req, res) => {
+//   //   res.send('Express veikia normaliai');
+//   res.sendFile(path.join(__dirname, 'index.html'));
+// });
+
 app.get('/', (req, res) => {
-  //   res.send('Express veikia normaliai');
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'products.html'));
 });
 
 // create database
@@ -189,6 +193,69 @@ app.get('/authors-and-posts', (req, res) => {
     if (err) throw err;
     console.log(result);
     res.json({ result, msg: 'author and post merge created' });
+  });
+});
+
+// PRODUCS
+
+// Create product table
+app.get('/products/table/create', (req, res) => {
+  const sql = `
+  CREATE TABLE \`nodesql\`.\`products\` ( 
+    \`pro_id\` INT(2) NOT NULL AUTO_INCREMENT , 
+    \`product_name\` VARCHAR(30) NOT NULL , 
+     
+    \`price\` INT(2) NOT NULL , 
+    \`quantity\` INT(2) NOT NULL , 
+    \`category\` VARCHAR(30) NOT NULL ,
+   
+    \`created_at\` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+    PRIMARY KEY (\`pro_id\`)) ENGINE = InnoDB;
+  `;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.json({ result, msg: 'product table created' });
+  });
+});
+// Create product_categories table
+app.get('/products-categories/table/create', (req, res) => {
+  const sql = `
+    CREATE TABLE \`nodesql\`.\`products_categories\` ( 
+      \`id\` INT(2) NOT NULL AUTO_INCREMENT , 
+      \`name\` VARCHAR(30) NOT NULL , 
+      \`product_id\` INT(2) NOT NULL  ,      
+      \`created_at\` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+      PRIMARY KEY (\`id\`)) ENGINE = InnoDB;
+      
+    `;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.json({ result, msg: 'product_categories table created' });
+  });
+});
+//get all prod cat
+
+app.get('/product-categories', (req, res) => {
+  const sql = 'SELECT * FROM products_categories';
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.json(result);
+  });
+});
+
+// CREATE 3 CAT HOME, OUTDOORS, GARDEN
+app.get('/products-categories/table/create/new', (req, res) => {
+  console.log('req.body', req.body);
+
+  const newCategory = { name: 'GARDEN', product_id: '1' };
+  const sql = 'INSERT INTO products_categories SET ?';
+  db.query(sql, newCategory, (err, result) => {
+    if (err) throw err.stack;
+    //   res.redirect('/allposts');
+    res.json({ msg: 'irasas sukurtas', result });
   });
 });
 
